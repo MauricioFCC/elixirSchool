@@ -1,0 +1,250 @@
+# Elixir School
+
+## Operaciones Basicas
+
+Aridmeticas
+
+<!-- livebook:{"break_markdown":true} -->
+
+Elixir admite los operadores básicos `+, -, * y /` como cabría esperar. Es importante recordar que `/` siempre devolverá un flotante:
+
+```elixir
+# 4
+2 + 2
+```
+
+```elixir
+# 1
+2 - 1
+```
+
+```elixir
+# 10
+2 * 5
+```
+
+```elixir
+# 2.0
+10 / 5
+```
+
+Si necesita la división de enteros o el resto de la división (es decir, módulo), Elixir viene con dos funciones útiles para lograrlo:
+
+```elixir
+# 2
+div(10, 5)
+```
+
+```elixir
+# 1
+rem(10, 3)
+```
+
+Booleans
+
+<!-- livebook:{"break_markdown":true} -->
+
+Elixir proporciona `or || and && y not !` operadores booleanos. Estos admiten cualquier tipo. En elixir and y or en realidad se asigna a andalso y orelse en Erlang.
+
+<!-- livebook:{"break_markdown":true} -->
+
+Comparison
+
+<!-- livebook:{"break_markdown":true} -->
+
+Elixir viene con todos los operadores de comparación a los que estamos acostumbrados:
+
+```elixir
+# Comparacion
+1 == 1
+# Diferencia
+1 != 2
+# Comparacion estricta (Simbolo y tipo)
+1 === "1"
+# Diferencia estricta
+1 !== "1"
+# meno o igual
+2 <= 3
+# menor o igual
+2 >= 3
+# Mayor que
+1 > 2
+# Menor que
+2 < 3
+```
+
+Orden de clasificación de las comparaciones:
+número < átomo < referencia < función < puerto < pid < tupla < mapa < lista < cadena de bits
+
+<!-- livebook:{"break_markdown":true} -->
+
+String Interpolation:
+
+<!-- livebook:{"break_markdown":true} -->
+
+Similar a ruby
+
+```elixir
+# "jhon Doe"
+name = "jhon Doe"
+# "Hello jhon Doe"
+"Hello #{name}"
+```
+
+String Concatenation:
+
+<!-- livebook:{"break_markdown":true} -->
+
+se usa `<>` para concatenar dos cadenas
+
+```elixir
+# "jhon Doe"
+name = "jhon Doe"
+# "Hello jhon Doe"
+"Hello " <> name
+```
+
+## Basic data types
+
+Integers:
+
+<!-- livebook:{"break_markdown":true} -->
+
+Soporta; Binarios, Octal y hexadecimal
+
+```elixir
+# 6
+0b0110
+```
+
+```elixir
+# 420
+0o644
+```
+
+```elixir
+# 31
+0x1F
+```
+
+Floats
+
+<!-- livebook:{"break_markdown":true} -->
+
+Los números de punto flotante requieren un decimal después de al menos un dígito; tienen doble precisión de 64 bits y admiten `e` para valores de exponente:
+
+```elixir
+# 3.14
+3.14
+```
+
+```elixir
+.14 # ** (SyntaxError) iex:2: syntax error before: '.'
+```
+
+```elixir
+# 1.0e-10
+1.0e-10
+```
+
+Booleans:
+
+<!-- livebook:{"break_markdown":true} -->
+
+Elixir soporta `true` verdadero`false`  y `nil` falso
+
+```elixir
+# true
+true
+```
+
+```elixir
+# false
+false
+```
+
+Atoms:
+
+<!-- livebook:{"break_markdown":true} -->
+
+Es una constante cuyo nombre es su valor. Son sinónimos de símbolos. `true` y `false` también son átomos.
+
+<!-- livebook:{"break_markdown":true} -->
+
+Los nombres de los módulos en Elixir también son átomos. `MyApp.MyModule` es un átomo válido, incluso si aún no se ha declarado dicho módulo.
+
+<!-- livebook:{"break_markdown":true} -->
+
+Los átomos también se utilizan para hacer referencia a módulos de las bibliotecas de Erlang, incluidos los integrados.
+
+```elixir
+# :foo
+:foo
+# false
+:foo == :bar
+# true
+true == true
+# true
+false == false
+# true
+is_atom(MyApp.MyModule)
+```
+
+módulo de la biblioteca de Erlang
+
+```elixir
+# <<23, 104, 108>>
+:crypto.strong_rand_bytes(3)
+```
+
+Strings
+
+<!-- livebook:{"break_markdown":true} -->
+
+Se usa codificado en UTF-8 y entre comillas dobles:
+
+```elixir
+# "Hello"
+"Hello"
+```
+
+```elixir
+
+```
+
+```elixir
+# "Soy un string"
+"Soy un string"
+```
+
+Elixir también incluye tipos de datos más complejos. Aprenderemos más sobre esto cuando aprendamos sobre colecciones y funciones.
+
+<!-- livebook:{"break_markdown":true} -->
+
+Collections -> https://elixirschool.com/en/lessons/basics/collections
+
+<!-- livebook:{"break_markdown":true} -->
+
+Functions -> https://elixirschool.com/en/lessons/basics/functions
+
+## Collestions
+
+Las listas son colecciones simples de valores que pueden incluir múltiples tipos; las listas también pueden incluir valores no únicos:
+
+```elixir
+# [5.5, :Atomo, "Papaya"]
+[5.5, :Atomo, "Papaya"]
+```
+
+Elixir implementa colecciones de listas como listas enlazadas. Esto significa que acceder a la longitud de la lista es una operación que se ejecutará en tiempo lineal **(O(n))**. Por esta razón, normalmente es más rápido anteponer que agregar:
+
+```elixir
+# [5.5, :Atomo, "Papaya"]
+list = [5.5, :Atomo, "Papaya"]
+# Anteponiendo (fast)
+# [:Pi, 5.5, :Atomo, "Papaya"]
+[:Pi | list]
+# Anexando (slow)
+# [5.5, :Atomo, "Papaya", "Papayuela"]
+list ++ ["Papayuela"]
+```
