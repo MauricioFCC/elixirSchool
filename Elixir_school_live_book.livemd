@@ -243,8 +243,233 @@ Elixir implementa colecciones de listas como listas enlazadas. Esto significa qu
 list = [5.5, :Atomo, "Papaya"]
 # Anteponiendo (fast)
 # [:Pi, 5.5, :Atomo, "Papaya"]
+```
+
+```elixir
 [:Pi | list]
 # Anexando (slow)
 # [5.5, :Atomo, "Papaya", "Papayuela"]
 list ++ ["Papayuela"]
+```
+
+**List Concatenation:**
+
+<!-- livebook:{"break_markdown":true} -->
+
+se utiliza `++`
+
+<!-- livebook:{"break_markdown":true} -->
+
+**list Subtration:**
+
+<!-- livebook:{"break_markdown":true} -->
+
+se proporciona a través del operador `--`
+
+```elixir
+# [1, 2, 3, 4]
+[1, 2, "fake"] -- ["fake", 3, 4]
+```
+
+los valores duplicados. Para cada elemento de la derecha, la primera aparición se elimina de la izquierda:
+
+```elixir
+# [2, 3]
+[1, 2, 2, 3, 2, 3] -- [1, 2, 3, 2]
+```
+
+La resta de listas utiliza una comparación estricta para hacer coincidir los valores.
+
+```elixir
+# [2]
+[2] -- [2.0]
+```
+
+```elixir
+# []
+[2.0] -- [2.0]
+```
+
+**head and tie:**
+
+<!-- livebook:{"break_markdown":true} -->
+
+La cabeza es el primer elemento de la lista, mientras que la cola es una lista que contiene los elementos restantes. cabeza `hd` y cola `tl`, para trabajar con estas piezas:
+
+```elixir
+# :Pi
+hd([:Pi, :Atomo, "Papaya"])
+```
+
+```elixir
+# [:Atomo, "Papaya"]
+tl([:Pi, :Atomo, "Papaya"])
+```
+
+Se puede utilizar la coincidencia de patrones y el operador contras | para dividir una lista en cabeza y cola.
+
+```elixir
+# [:Pi, :Atomo, "Papaya"]
+[cabeza | cola] = [:Pi, :Atomo, "Papaya"]
+```
+
+```elixir
+# :Pi
+cabeza
+```
+
+```elixir
+# [:Atomo, "Papaya"]
+cola
+```
+
+**Tuples:**
+
+<!-- livebook:{"break_markdown":true} -->
+
+Son similares a las listas, pero se almacenan de forma contigua en la memoria. Esto hace que el acceso a su longitud sea rápido pero que la modificación sea costosa; la nueva tupla debe copiarse por completo en la memoria. Las tuplas se definen con llaves:
+
+```elixir
+# {:Pi, :Atomo, "Papaya", 2.33}
+tupla = {:Pi, :Atomo, "Papaya", 2.33}
+```
+
+Es común que las *tuplas* se utilicen como mecanismo para devolver información adicional de las funciones; es de utilidad en coincidencia de patrones:
+
+```elixir
+# {:ok, "Successful!"}
+{:ok, value} = {:ok, "Successful!"}
+# "Successful!"
+value
+```
+
+```elixir
+# ** (MatchError) no match of right hand side value: {:error}
+{:ok, value} = {:error}
+```
+
+**Keyword lists:**
+
+<!-- livebook:{"break_markdown":true} -->
+
+Las listas de palabras clave y los mapas son las colecciones asociativas de Elixir. En Elixir, una lista de palabras clave es una lista especial de tuplas de dos elementos cuyo primer elemento es un átomo; comparten rendimiento con listas:
+
+```elixir
+# [yo: "programo", hola: "mundo"]
+[yo: "programo", hola: "mundo"]
+```
+
+```elixir
+# [yo: "programo", hola: "mundo"]
+[{:yo, "programo"}, {:hola, "mundo"}]
+```
+
+características de las listas de palabras clave resaltan su importancia:
+
+<!-- livebook:{"break_markdown":true} -->
+
+* Las claves son átomos.
+* Las llaves están ordenadas.
+* Las claves no tienen que ser únicas.
+
+<!-- livebook:{"break_markdown":true} -->
+
+Por estas razones, las listas de palabras clave se usan más comúnmente para pasar opciones a funciones.
+
+<!-- livebook:{"break_markdown":true} -->
+
+**Maps:**
+
+<!-- livebook:{"break_markdown":true} -->
+
+los mapas son el almacén clave-valor. A diferencia de las listas de palabras clave, permiten claves de cualquier tipo y no están ordenadas. sintaxis `%{}`:
+
+```elixir
+# %{:yo => "Programo", "hola" => :Mundo}
+dev = %{:yo => "Programo", "hola" => :Mundo}
+```
+
+```elixir
+# "Programo"
+dev[:yo]
+```
+
+```elixir
+# :Mundo
+dev["hola"]
+```
+
+A partir de Elixir 1.2, las variables están permitidas como claves de mapa:
+
+```elixir
+# "hello"
+key = "hello"
+```
+
+```elixir
+# %{"hello" => "world"}
+%{key => "world"}
+```
+
+Si se agrega un duplicado a un mapa, reemplazará el valor anterior:
+
+```elixir
+# %{yo: "Hola Mundo"}
+dev = %{:yo => "Programo", :yo => "Hola Mundo"}
+```
+
+Hay una sintaxis especial para los mapas que contienen solo átomos como clave:
+
+```elixir
+# %{yo: "Programo", Hello: "World"}
+%{yo: "Programo", Hello: "World"}
+```
+
+```elixir
+# true
+%{yo: "Programo", Hello: "World"} == %{:yo => "Programo", :Hello => "World"}
+```
+
+sintaxis especial para acceder a las claves que son átomos:
+
+```elixir
+# %{yo: "Programo", Hello: "World"}
+dev = %{yo: "Programo", Hello: "World"}
+```
+
+```elixir
+# "World"
+dev.Hello
+```
+
+poseen su propia sintaxis para realizar operaciones de actualización (nota: esto crea un nuevo mapa):
+
+```elixir
+# %{yo: "Programo", Hello: "World"}
+dev = %{yo: "Programo", Hello: "World"}
+```
+
+```elixir
+# %{soy: "programador", Hello: "World"}
+%{dev | soy: "programador"}
+```
+
+Esta sintaxis solo puede usarse para actualizar una clave que ya existe en el mapa de lo contrario saldrá error.
+
+<!-- livebook:{"break_markdown":true} -->
+
+Para crear una nueva clave, en vez utiliza `[Map.put/3](https://hexdocs.pm/elixir/Map.html#put/3)`:
+
+```elixir
+dev = %{hello: "world} #%{hello: "world"}
+```
+
+```elixir
+# ** (KeyError) key :foo not found in: %{hello: "world"}
+%{dev | soy: " programador elixir"}
+```
+
+```elixir
+# %{:yo, "programo"}
+map.put(dev, :yo, "programo en phoenix")
 ```
